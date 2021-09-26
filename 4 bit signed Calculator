@@ -1,0 +1,22 @@
+module Calculator(a,b,s0,s1,sign_a,sign_b,y);
+input [3:0]a,b;
+input s0,s1;
+input sign_a,sign_b;
+wire [4:0]a_2comp,b_2comp;
+output [7:0]y;
+wire [4:0]sum,diff,div;
+wire [7:0]mul;
+wire [4:0]a_temp,b_temp;
+
+assign a_2comp=5'b00001+(~a);
+assign b_2comp=5'b00001+(~b);
+assign a_temp= sign_a==1'b1 ? a_2comp : a;
+assign b_temp= sign_b==1'b1 ? b_2comp : b;
+assign sum=a_temp + b_temp;
+assign diff=a_temp - b_temp;
+assign mul=a_temp * b_temp;
+assign div=a_temp / b_temp;
+assign y= (s1==1'b1) ? ((s0==1'b1)?div:mul) : ((s0==1'b1)?diff:sum);
+
+
+endmodule
