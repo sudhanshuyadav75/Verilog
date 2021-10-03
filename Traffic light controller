@@ -1,0 +1,83 @@
+module TLC(clk,rst,R_Y_G_EAST,R_Y_G_WEST,R_Y_G_NORTH,R_Y_G_SOUTH);
+input clk,rst;
+output reg [2:0]R_Y_G_EAST,R_Y_G_WEST,R_Y_G_NORTH,R_Y_G_SOUTH;
+integer counter_east=40;
+integer counter_north=80;
+integer counter_west=120;
+integer counter_south=160;
+
+//////////////////////////////////////////
+always@(posedge clk)
+if(rst==1'b1)
+begin
+	R_Y_G_EAST<=3'b100;
+	R_Y_G_WEST<=3'b100;
+	R_Y_G_NORTH<=3'b100;
+	R_Y_G_SOUTH<=3'b100;
+end
+else if(rst==1'b0)
+begin
+	counter_east<=counter_east-1;
+	counter_west<=counter_west-1;
+	counter_north<=counter_north-1;
+	counter_south<=counter_south-1;
+
+	if (counter_east==40)
+	begin
+		R_Y_G_EAST<=3'b001;
+	end
+	else if (counter_east==5)
+	begin
+		R_Y_G_EAST<=3'b010;
+	end
+	else if (counter_east==0)
+	begin
+		R_Y_G_EAST<=3'b100;
+		counter_east<=0;
+	   if (counter_north==40)
+		begin
+			R_Y_G_NORTH<=3'b001;
+		end
+		else if (counter_north==5)
+		begin
+			R_Y_G_NORTH<=3'b010;
+		end
+		else if (counter_north==0)
+		begin
+			R_Y_G_NORTH<=3'b100;
+			counter_north<=0;
+			if (counter_west==40)
+			begin
+				R_Y_G_WEST<=3'b001;
+			end
+			else if (counter_west==5)
+			begin
+				R_Y_G_WEST<=3'b010;
+			end
+			else if (counter_west==0)
+			begin
+				R_Y_G_WEST<=3'b100;
+				counter_west<=0;
+				if (counter_south==40)
+				begin
+					R_Y_G_SOUTH<=3'b001;
+				end
+				else if (counter_south==5)
+				begin
+					R_Y_G_SOUTH<=3'b010;
+				end
+				else if (counter_south==0)
+				begin
+					R_Y_G_SOUTH<=3'b100;
+					counter_east<=40;
+					counter_north<=80;
+					counter_west<=120;
+					counter_south<=160;
+				end
+			end
+		end
+	end
+end
+
+
+endmodule
